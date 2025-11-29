@@ -1,116 +1,169 @@
-# Batalha Naval - Posicionamento de Navios
+# 🚢 Batalha Naval --- Nível Aventureiro
 
-## Descrição do Projeto
+## Posicionamento de Navios Horizontais, Verticais e Diagonais
 
-Este projeto implementa o posicionamento de navios em um tabuleiro de **Batalha Naval** em C. O objetivo é demonstrar o uso de matrizes, vetores e loops para manipulação de dados em um tabuleiro 10x10.
+## 📌 Descrição do Projeto
 
-No nível iniciante deste desafio, dois navios são posicionados: um horizontal e outro vertical, ambos com tamanho 3.
+Este projeto implementa o posicionamento de **quatro navios** em um
+tabuleiro 10x10 do jogo **Batalha Naval**, utilizando a linguagem C.
 
-## Funcionalidades
+Este é o **Nível Aventureiro** da evolução proposta, onde além dos
+navios horizontais e verticais (introduzidos no nível anterior), agora o
+programa também posiciona **navios na diagonal**, exigindo um tratamento
+adicional de limites e validação de sobreposição.
 
-- Criação de um tabuleiro 10x10 representado por uma matriz.
-- Inicialização do tabuleiro com `0` (água).
-- Posicionamento de um navio horizontal e outro vertical com valor `3`.
-- Exibição do tabuleiro com linhas rotuladas (`A-J`) e colunas numeradas (`0-9`).
+O código demonstra de forma clara:
 
-## Estrutura do Código
+-   manipulação de **matrizes bidimensionais**,\
+-   uso de **loops aninhados**,\
+-   verificação de coordenadas,\
+-   e aplicação de lógica simples para evitar colisões.
 
-1. **Inicialização do tabuleiro:**
+------------------------------------------------------------------------
 
-```c
-int tabuleiro[10][10];
-for (int i = 0; i < 10; i++) {
-    for (int j = 0; j < 10; j++) {
-        tabuleiro[i][j] = 0;
+## ⚓ Funcionalidades
+
+-   Criação de um tabuleiro **10x10**, inicializado com `0` (água).
+-   Posicionamento de **quatro navios** de tamanho fixo 3:
+    -   **2 navios** horizontais ou verticais.
+    -   **2 navios** colocados **na diagonal** (↘ e ↙).
+-   Validação de:
+    -   limites do tabuleiro,
+    -   sobreposição entre navios.
+-   Representação dos navios com o valor `3`.
+-   Exibição amigável do tabuleiro, com linhas (`A–J`) e colunas
+    (`0–9`).
+
+------------------------------------------------------------------------
+
+## 🧠 Lógica do Código
+
+### 1. Criação e inicialização do tabuleiro
+
+``` c
+int tabuleiro[TAM][TAM];
+for (int i = 0; i < TAM; i++) {
+    for (int j = 0; j < TAM; j++) {
+        tabuleiro[i][j] = 0; // água
     }
 }
 ```
 
-2. **Definição das coordenadas dos navios:**
+------------------------------------------------------------------------
 
-```c
-int navioH_linha = 2; // linha C
-int navioH_coluna = 3;
-int navioV_linha = 5; // linha F
-int navioV_coluna = 7;
-int tamanhoNavio = 3;
+### 2. Coordenadas iniciais dos navios
+
+Coordenadas definidas diretamente no código, conforme simplificação
+permitida pelo nível:
+
+-   1 navio horizontal\
+-   1 navio vertical\
+-   2 navios diagonais (↘ e ↙)
+
+Todos com tamanho **3**.
+
+------------------------------------------------------------------------
+
+### 3. Validação antes de posicionar
+
+O programa verifica:
+
+-   se o navio cabe na direção desejada,\
+-   se não ultrapassa o limite do tabuleiro,\
+-   se nenhuma posição já está ocupada.
+
+Trecho do validador:
+
+``` c
+if (l < 0 || l >= TAM || c < 0 || c >= TAM)
+    return 0;
+if (tab[l][c] == OCUPADO)
+    return 0;
 ```
 
-3. **Posicionamento dos navios:**
+------------------------------------------------------------------------
 
-- Horizontal:
+### 4. Posicionamento do navio
 
-```c
-for (int i = 0; i < tamanhoNavio; i++) {
-    if (navioH_coluna + i < 10) {
-        tabuleiro[navioH_linha][navioH_coluna + i] = 3;
-    }
-}
+``` c
+tab[linha + dx * i][coluna + dy * i] = OCUPADO;
 ```
 
-- Vertical:
+Cada navio usa um vetor direção (`dx`, `dy`):
 
-```c
-for (int i = 0; i < tamanhoNavio; i++) {
-    if (navioV_linha + i < 10) {
-        tabuleiro[navioV_linha + i][navioV_coluna] = 3;
-    }
-}
-```
+-   Horizontal → (0, 1)\
+-   Vertical → (1, 0)\
+-   Diagonal ↘ → (1, 1)\
+-   Diagonal ↙ → (1, -1)
 
-4. **Exibição do tabuleiro:**
+------------------------------------------------------------------------
 
-```c
-printf("   0 1 2 3 4 5 6 7 8 9\n");
-for (int i = 0; i < 10; i++) {
-    printf("%c  ", linha[i]);
-    for (int j = 0; j < 10; j++) {
+### 5. Exibição do tabuleiro
+
+``` c
+printf("    0 1 2 3 4 5 6 7 8 9
+");
+for (int i = 0; i < TAM; i++) {
+    printf("%c | ", linhaChar[i]);
+    for (int j = 0; j < TAM; j++) {
         printf("%d ", tabuleiro[i][j]);
     }
-    printf("\n");
+    printf("
+");
 }
 ```
 
-## Como Executar
+------------------------------------------------------------------------
 
-1. Salve o código em um arquivo `batalha_naval.c`.
-2. Compile usando `gcc`:
+## ▶️ Como Executar
 
-```bash
+1.  Salve o código como `batalha_naval.c`
+2.  Compile:
+
+``` bash
 gcc batalha_naval.c -o batalha_naval
 ```
 
-3. Execute:
+3.  Execute:
 
-```bash
+``` bash
 ./batalha_naval
 ```
 
-4. O tabuleiro será exibido no console.
+O tabuleiro será exibido no console com os navios posicionados.
 
-## Saída Esperada
+------------------------------------------------------------------------
 
-```
-   0 1 2 3 4 5 6 7 8 9
-A  0 0 0 0 0 0 0 0 0 0
-B  0 0 0 0 0 0 0 0 0 0
-C  0 0 0 3 3 3 0 0 0 0
-D  0 0 0 0 0 0 0 0 0 0
-E  0 0 0 0 0 0 0 0 0 0
-F  0 0 0 0 0 0 0 3 0 0
-G  0 0 0 0 0 0 0 3 0 0
-H  0 0 0 0 0 0 0 3 0 0
-I  0 0 0 0 0 0 0 0 0 0
-J  0 0 0 0 0 0 0 0 0 0
-```
+## 🧪 Saída Esperada (exemplo ilustrativo)
 
-## Observações
+Os valores podem variar conforme as coordenadas definidas, mas o formato
+é assim:
 
-- As coordenadas são definidas diretamente no código.
-- Este é um nível inicial do jogo, sem lógica de ataque.
-- Validação de limites é simples, garantindo que navios não saiam do tabuleiro.
+        0 1 2 3 4 5 6 7 8 9
+    A | 0 0 0 0 0 0 0 0 0 0
+    B | 0 3 0 0 0 0 0 0 3 0
+    C | 0 0 3 3 3 0 0 0 0 0
+    D | 0 0 0 0 0 0 0 3 0 0
+    E | 0 0 0 0 0 0 0 3 0 0
+    F | 0 0 0 0 0 0 0 3 0 0
+    G | 0 0 0 0 0 0 0 0 0 0
+    H | 0 0 0 0 0 0 0 0 0 0
+    I | 0 0 0 0 0 0 0 0 0 0
+    J | 0 0 0 0 0 0 0 0 0 0
 
-## Autor
+------------------------------------------------------------------------
 
-- Hudson Lima
+## 📝 Observações
 
+-   As coordenadas dos navios são definidas diretamente no código,
+    conforme instruções do desafio.
+-   A validação impede sobreposição e saída dos limites.
+-   Este nível **não envolve ataques, acertos ou lógica de jogo** ---
+    apenas posicionamento.
+-   O código está documentado e organizado para facilitar entendimento.
+
+------------------------------------------------------------------------
+
+## 👨‍💻 Autor
+
+**Hudson Nascimento de Lima**
